@@ -1,0 +1,26 @@
+node{
+stage('checkoutCode'){
+
+git branch: 'dev', credentialsId: 'cb6ff03f-2771-46d4-9779-aa96add42340', url: 'https://github.com/ramesh-next/nodejs-app-mss.git'
+
+}
+}
+
+stage('Build'){
+nodejs(nodeJSInstallationName: 'Nodejs19.0.1'){
+sh "npm install"
+}
+}
+
+stage('ExecuteSonarQubeReports'){
+nodejs(nodeJSInstallationName: 'Nodejs19.0.1'){
+sh "npm install"
+}
+}
+
+stage('UploadArtifactintoNexus'){
+sh "npm publish"
+}
+ stage('RunNodejs'){
+ sh "npm run start"
+ }
