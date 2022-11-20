@@ -1,0 +1,28 @@
+pipeline{
+
+agent{
+
+label 'ansiblenode'
+}
+
+environment{
+AWSEC2_PRIVATEKEY=credentials('ec2-private-key')
+}
+
+
+stages{
+stage('checkoutCode'){
+steps{
+git credentialsId: 'a3cb1a70-ae4c-4f23-bfd5-59c0ce8ab0ea', url: 'https://github.com/ramesh-next/jenkins-with-ansible.git'
+}
+} 
+
+stage('RunAnsiblePlaybook'){
+steps{
+sh "ansible-playbook -i inventory/walmart.hosts --private-key=$AWSEC2_PRIVATEKEY playbooks/installTomcat.yml --ssh-common-args='-o  StrictHostKeyChecking=no'"
+}
+}
+ 
+}//stages closing
+
+}//pipeline closing
